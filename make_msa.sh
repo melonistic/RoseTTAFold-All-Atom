@@ -48,18 +48,25 @@ then
         echo "Running HHblits against UniRef30 with E-value cutoff $e"
         if [ ! -s $tmp_dir/t000_.$e.a3m ]
         then
+            echo "prev_a3m: $prev_a3m"
+            echo "$tmp_dir/t000_.$e.a3m"
+            echo "HHBLITS_UR30: $HHBLITS_UR30"
             $HHBLITS_UR30 -i $prev_a3m -oa3m $tmp_dir/t000_.$e.a3m -e $e -v 0
         fi
+        echo "Starting with hhfilter 75"
         hhfilter -maxseq 100000 -id 90 -cov 75 -i $tmp_dir/t000_.$e.a3m -o $tmp_dir/t000_.$e.id90cov75.a3m
+        echo "Starting with hhfilter 50"
         hhfilter -maxseq 100000 -id 90 -cov 50 -i $tmp_dir/t000_.$e.a3m -o $tmp_dir/t000_.$e.id90cov50.a3m
         prev_a3m="$tmp_dir/t000_.$e.id90cov50.a3m"
+        echo "prev_a3m: $prev_a3m"
         n75=`grep -c "^>" $tmp_dir/t000_.$e.id90cov75.a3m`
         n50=`grep -c "^>" $tmp_dir/t000_.$e.id90cov50.a3m`
 
-        if ((n75>2000))
+        if ((n75>2000)) 
         then
             if [ ! -s ${out_prefix}.msa0.a3m ]
             then
+                echo "Copying $tmp_dir/t000_.$e.id90cov75.a3m to $out_prefix.msa0.a3m"
                 cp $tmp_dir/t000_.$e.id90cov75.a3m ${out_prefix}.msa0.a3m
                 break
             fi
@@ -67,6 +74,7 @@ then
         then
             if [ ! -s ${out_prefix}.msa0.a3m ]
             then
+                echo "Copying $tmp_dir/t000_.$e.id90cov50.a3m to $out_prefix.msa0.a3m"
                 cp $tmp_dir/t000_.$e.id90cov50.a3m ${out_prefix}.msa0.a3m
                 break
             fi
@@ -82,11 +90,18 @@ then
         echo "Running HHblits against BFD with E-value cutoff $e"
         if [ ! -s $tmp_dir/t000_.$e.bfd.a3m ]
         then
+            echo "$HHBLITS_BFD"
+            echo "input $prev_a3m"
+            echo "oa3m $tmp_dir/t000_.$e.bfd.a3m"
             $HHBLITS_BFD -i $prev_a3m -oa3m $tmp_dir/t000_.$e.bfd.a3m -e $e -v 0
         fi
+        echo "Starting with hhfilter 75"
         hhfilter -maxseq 100000 -id 90 -cov 75 -i $tmp_dir/t000_.$e.bfd.a3m -o $tmp_dir/t000_.$e.bfd.id90cov75.a3m
+        echo "Starting with hhfilter 75"
         hhfilter -maxseq 100000 -id 90 -cov 50 -i $tmp_dir/t000_.$e.bfd.a3m -o $tmp_dir/t000_.$e.bfd.id90cov50.a3m
         prev_a3m="$tmp_dir/t000_.$e.bfd.id90cov50.a3m"
+        
+        echo "prev_a3m: $prev_a3m"
         n75=`grep -c "^>" $tmp_dir/t000_.$e.bfd.id90cov75.a3m`
         n50=`grep -c "^>" $tmp_dir/t000_.$e.bfd.id90cov50.a3m`
 
@@ -94,12 +109,14 @@ then
         then
             if [ ! -s ${out_prefix}.msa0.a3m ]
             then
+                echo "Copying $tmp_dir/t000_.$e.bfd.id90cov75.a3m to $out_prefix.msa0.a3m"
                 cp $tmp_dir/t000_.$e.bfd.id90cov75.a3m ${out_prefix}.msa0.a3m
             fi
         elif ((n50>4000))
         then
             if [ ! -s ${out_prefix}.msa0.a3m ]
             then
+                echo "Copying $tmp_dir/t000_.$e.bfd.id90cov50.a3m  to $out_prefix.msa0.a3m"
                 cp $tmp_dir/t000_.$e.bfd.id90cov50.a3m ${out_prefix}.msa0.a3m
             fi
         fi
@@ -107,13 +124,14 @@ then
 
     if [ ! -s ${out_prefix}.msa0.a3m ]
     then
+        echo "from $prev_a3m to $out_prefix.msa0.a3m"
         cp $prev_a3m ${out_prefix}.msa0.a3m
     fi
 fi
     
 echo "Running PSIPRED"
 mkdir -p $out_dir/log
-$PIPE_DIR/input_prep/make_ss.sh $out_dir/t000_.msa0.a3m $out_dir/t000_.ss2 > $out_dir/log/make_ss.stdout 2> $out_dir/log/make_ss.stderr
+bash $PIPE_DIR/input_prep/make_ss.sh $out_dir/t000_.msa0.a3m $out_dir/t000_.ss2 > $out_dir/log/make_ss.stdout 2> $out_dir/log/make_ss.stderr
 
 if [ ! -s $out_dir/t000_.hhr ]
 then
