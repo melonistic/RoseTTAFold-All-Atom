@@ -11,10 +11,12 @@ def make_msa(
     chain,
     model_runner
 ): 
+    print("model_runner.config.output_path" + model_runner.config.output_path)
     out_dir_base = Path(model_runner.config.output_path)
     hash = model_runner.config.job_name
     out_dir = out_dir_base / hash / chain
     out_dir.mkdir(parents=True, exist_ok=True)
+    print("out_dir" + out_dir)
 
     command = model_runner.config.database_params.command
     search_base = model_runner.config.database_params.sequencedb
@@ -29,7 +31,7 @@ def make_msa(
         return out_a3m, out_hhr, out_atab
 
     search_command = f"./{command} {fasta_file} {out_dir} {num_cpus} {ram_gb} {search_base} {template_database}"
-    print(search_command)
+    print("search_command" + search_command)
     _ = subprocess.run(search_command, shell=True)
     return out_a3m, out_hhr, out_atab
 
