@@ -16,7 +16,7 @@ def make_msa(
     hash = model_runner.config.job_name
     out_dir = out_dir_base / hash / chain
     out_dir.mkdir(parents=True, exist_ok=True)
-    print("out_dir" + out_dir)
+    print("out_dir" + str(out_dir))
 
     command = model_runner.config.database_params.command
     search_base = model_runner.config.database_params.sequencedb
