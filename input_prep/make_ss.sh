@@ -11,7 +11,7 @@ echo "i_a3m: $i_a3m"
 o_ss="$2"
 echo "o_ss: $o_ss"
 
-ID=$(dirname $i_a3m)/$(basename $i_a3m .a3m).tmp
+ID=$(basename $i_a3m .a3m).tmp
 echo "ID: $ID"
 echo "PIPE_DIR: $PIPE_DIR"
 
