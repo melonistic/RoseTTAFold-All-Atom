@@ -33,5 +33,5 @@ echo ">ss_conf"
 grep "^Conf" $ID.horiz | awk '{print $2}'
 ) | awk '{if(substr($1,1,1)==">") {print "\n"$1} else {printf "%s", $1}} END {print ""}' | sed "1d" > $o_ss
 
-rm ${i_a3m}.csb.hhblits.ss2
-rm $ID.*
+# rm ${i_a3m}.csb.hhblits.ss2
+# rm $ID.*
