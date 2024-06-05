@@ -11,13 +11,11 @@ echo "i_a3m: $i_a3m"
 o_ss="$2"
 echo "o_ss: $o_ss"
 
-ID=$(basename $i_a3m .a3m).tmp
+ID=$(dirname $i_a3m)/$(basename $i_a3m .a3m).tmp
 echo "ID: $ID"
 echo "PIPE_DIR: $PIPE_DIR"
 
 $PIPE_DIR/csblast-2.2.3/bin/csbuild -i $i_a3m -I a3m -D $PIPE_DIR/csblast-2.2.3/data/K4000.crf -o $ID.chk -O chk
-
-echo $(ls $(basename $i_a3m .a3m))
 
 head -n 2 $i_a3m > $ID.fasta
 echo $ID.chk > $ID.pn
