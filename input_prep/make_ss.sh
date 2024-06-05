@@ -20,8 +20,9 @@ $PIPE_DIR/csblast-2.2.3/bin/csbuild -i $i_a3m -I a3m -D $PIPE_DIR/csblast-2.2.3/
 head -n 2 $i_a3m > $ID.fasta
 echo $ID.chk > $ID.pn
 echo $ID.fasta > $ID.sn
+echo $(ls -R outputs/7u7w_protein_custom/A)
 
-makemat -P $(basename $i_a3m .a3m).tmp
+makemat -P $ID
 psipred $ID.mtx $DATADIR/weights.dat $DATADIR/weights.dat2 $DATADIR/weights.dat3 > $ID.ss
 psipass2 $DATADIR/weights_p2.dat 1 1.0 1.0 $i_a3m.csb.hhblits.ss2 $ID.ss > $ID.horiz
 
