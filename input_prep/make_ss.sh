@@ -21,7 +21,7 @@ head -n 2 $i_a3m > $ID.fasta
 echo $ID.chk > $ID.pn
 echo $ID.fasta > $ID.sn
 
-makemat -P $ID
+makemat -P $(basename $i_a3m .a3m).tmp
 psipred $ID.mtx $DATADIR/weights.dat $DATADIR/weights.dat2 $DATADIR/weights.dat3 > $ID.ss
 psipass2 $DATADIR/weights_p2.dat 1 1.0 1.0 $i_a3m.csb.hhblits.ss2 $ID.ss > $ID.horiz
 
